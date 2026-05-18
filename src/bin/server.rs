@@ -18,9 +18,9 @@ async fn handle_connection(
         .await?;
     let mut bcast_rx = bcast_tx.subscribe();
 
-    // A continuous loop for concurrently performing two tasks: (1) receiving
-    // messages from `ws_stream` and broadcasting them, and (2) receiving
-    // messages on `bcast_rx` and sending them to the client.
+    // A continuous loop for concurrently performing two tasks: 
+    // (1) receiving messages from `ws_stream` and broadcasting them, 
+    // (2) receiving messages on `bcast_rx` and sending them to the client.
     loop {
         tokio::select! {
             incoming = ws_stream.next() => {
@@ -28,7 +28,11 @@ async fn handle_connection(
                     Some(Ok(msg)) => {
                         if let Some(text) = msg.as_text() {
                             println!("From client {addr:?} {text:?}");
-                            bcast_tx.send(text.into())?;
+                            let mut sent_text = String::from("From client ");
+                            sent_text.push_str(&addr.to_string());
+                            sent_text.push_str(": ");
+                            sent_text.push_str(text.into());
+                            bcast_tx.send(sent_text)?;
                         }
                     }
                     Some(Err(err)) => return Err(err.into()),
