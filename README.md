@@ -14,6 +14,11 @@ adpro stuff
 ### Client 3
 ![alt text](images/1_client3.png)
 >
-> to run the server, go to the main directory (chat) and do cargo run --bin server
-> to run the clients, go to the main directory (chat) and do cargo run --bin client
+> To run the server, go to the main directory (chat) and do cargo run --bin server
+>
+> To run the clients, go to the main directory (chat) and do cargo run --bin client
+>
 > When you type in some words in the client, it will be sent to the server and then the server will broadcast the message to all clients, including the client who sent the message.
+
+## Commit 2
+> Websocket is used for both the client and the server. In the client, it is defined when ClientBuilder::from_uri(Uri::from_static("ws://127.0.0.1:8080")). The ws part. While in the Server, it first makes a TCP server with let listener = TcpListener::bind("127.0.0.1:8080").await?; then uses websockets on top of it in let (_req, ws_stream) = ServerBuilder::new().accept(socket).await?;
